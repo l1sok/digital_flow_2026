@@ -24,8 +24,9 @@ module processing_unit (
 
     always_comb begin
         case(core_op)
-            SUB:     result_nx = RESULT_WIDTH'(data_a + data_b);
-            XOR:     result_nx = RESULT_WIDTH'(data_a - data_b);
+            ADD:     result_nx = RESULT_WIDTH'(data_a + data_b);
+            SUB:     result_nx = RESULT_WIDTH'(data_a - data_b);
+            XOR:     result_nx = RESULT_WIDTH'(data_a ^ data_b);
             MULT:    result_nx = RESULT_WIDTH'(data_a * data_b);
             default: result_nx = '0;
         endcase
