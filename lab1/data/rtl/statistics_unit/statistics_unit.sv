@@ -38,7 +38,7 @@ module statistics_unit (
     //------------------
     // count
     //------------------
-    assign core_count_nx = clear ? '0 : core_count + 16'd1;
+    assign core_count_nx = clear ? '0 : core_count_ff + 16'd1;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
@@ -62,12 +62,12 @@ module statistics_unit (
     //------------------
     // min
     //------------------
-    assign core_min_nx = clear                  ? '0 : 
+    assign core_min_nx = clear                  ? '0 :
                         (core_min_ff > data_in) ? data_in : core_min_ff;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
-            core_sum_ff <= '0;
+            core_min_ff <= '0;
         else if (wr_en_minmax)
             core_min_ff <= core_min_nx;
     end
@@ -75,12 +75,12 @@ module statistics_unit (
     //------------------
     // max
     //------------------
-    assign core_max_nx = clear                  ? '0 : 
+    assign core_max_nx = clear                  ? '0 :
                         (core_max_ff < data_in) ? data_in : core_max_ff;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
-            core_sum_ff <= '0;
+            core_max_ff <= '0;
         else if (wr_en_minmax)
             core_max_ff <= core_max_nx;
     end
