@@ -6,7 +6,7 @@ module statistics_unit (
     input  logic        valid_in,
     input  logic [31:0] data_in,
 
-    output logic [15:0] count,
+    output logic [ 9:0] count,
     output logic [31:0] sum,
     output logic [31:0] min,
     output logic [31:0] max
@@ -16,8 +16,8 @@ module statistics_unit (
     logic        wr_en_sum;
     logic        wr_en_minmax;
 
-    logic [15:0] core_count_ff;
-    logic [15:0] core_count_nx;
+    logic [9:0] core_count_ff;
+    logic [9:0] core_count_nx;
 
     logic [31:0] core_sum_ff;
     logic [31:0] core_sum_nx;
@@ -38,7 +38,7 @@ module statistics_unit (
     //------------------
     // count
     //------------------
-    assign core_count_nx = clear ? '0 : core_count_ff + 16'd1;
+    assign core_count_nx = clear ? '0 : core_count_ff + 10'd1;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
