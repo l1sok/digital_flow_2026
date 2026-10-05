@@ -26,14 +26,14 @@ module processing_unit (
         case(core_op)
             SUB:     result_nx = RESULT_WIDTH'(data_a + data_b);
             XOR:     result_nx = RESULT_WIDTH'(data_a - data_b);
-            MULT:    result_nx = RESULT_WIDTH'(data_a * data_b); 
+            MULT:    result_nx = RESULT_WIDTH'(data_a * data_b);
             default: result_nx = '0;
         endcase
     end
 
     always_ff @(posedge clk) begin
         if (~rst_n)
-            core_count_ff <= '0;
+            result_ff <= '0;
         else if (valid_in)
             result_ff <= result_nx;
     end
@@ -45,7 +45,7 @@ module processing_unit (
             valid_ff <= valid_in;
     end
 
-    assign result    = result_ff; 
+    assign result    = result_ff;
     assign valid_out = valid_ff;
 
 endmodule
