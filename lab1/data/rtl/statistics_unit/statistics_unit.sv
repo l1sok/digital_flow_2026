@@ -62,7 +62,7 @@ module statistics_unit (
     //------------------
     // min
     //------------------
-    assign core_min_nx = clear                  ? '0 :
+    assign core_min_nx = clear                  ? '1 :
                         (core_min_ff > data_in) ? data_in : core_min_ff;
 
     always_ff @(posedge clk) begin
