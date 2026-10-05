@@ -13,7 +13,7 @@ module processing_system (
     output logic        result_valid,
     output logic [31:0] result,
 
-    output logic [15:0] count,
+    output logic [ 9:0] count,
     output logic [31:0] sum,
     output logic [31:0] min,
     output logic [31:0] max,
@@ -30,7 +30,7 @@ module processing_system (
         .data_b    ( data_b       ),
         .operation ( operation    ),
         .valid_out ( result_valid ),
-        .result    ( result       )              
+        .result    ( result       )
     );
 
     statistics_unit statistics_unit (
@@ -46,6 +46,6 @@ module processing_system (
     );
 
     assign range          = max - min;
-    assign range_exceeded = range > range_limit; 
+    assign range_exceeded = range > range_limit;
 
 endmodule
