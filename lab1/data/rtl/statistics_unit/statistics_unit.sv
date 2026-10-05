@@ -85,12 +85,4 @@ module statistics_unit (
             core_max_ff <= core_max_nx;
     end
 
-    //------------------
-    // outputs
-    //------------------
-    assign count = core_count_ff;
-    assign sum   = core_sum_ff;
-    assign min   = core_min_ff;
-    assign max   = core_max_ff;
-
 endmodule
