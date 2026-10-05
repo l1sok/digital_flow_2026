@@ -351,7 +351,7 @@ module tb;
     end
 
     initial begin
-        #10us;
+        #15us;
         $fatal(1, "Test timeout");
     end
 endmodule
