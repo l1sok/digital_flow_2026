@@ -48,7 +48,7 @@ package pu_tb_pkg;
             transaction t;
 
             forever begin
-                @(negedge vif.clk);
+                @(posedge vif.clk); // TODO: negedge
 
                 vif.valid_in <= 0;
 

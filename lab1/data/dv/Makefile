@@ -9,7 +9,7 @@
 
 XRUN := xrun
 
-TEST ?= no_test
+TEST ?= stat
 
 ifeq ($(TEST),stat)
     RTL := ../rtl/statistics_unit/statistics_unit.sv

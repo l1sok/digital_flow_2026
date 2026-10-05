@@ -54,7 +54,7 @@ package statistics_tb_pkg;
             transaction t;
 
             forever begin
-                @(negedge vif.clk);
+                @(posedge vif.clk); // TODO negedge
                 if (vif.rst_n !== 1'b1) begin
                     vif.clear    <= 1;
                     vif.valid_in <= 0;
@@ -93,90 +93,89 @@ package statistics_tb_pkg;
             forever begin
                 @(posedge vif.clk);
 
-                t = new(vif.clear, vif.valid_in, vif.data_in);
+                if( vif.rst_n && (vif.clear || vif.valid_in) ) begin
+                    t = new(vif.clear, vif.valid_in, vif.data_in);
 
-                inputs.put(t);
+                    inputs.put(t);
+                end
             end
         endtask
 
-    endclass
-
-    class output_monitor;
-        virtual statistics_if vif;
-        mailbox #(statistics_t) outputs;
-
-        function new(
-            virtual statistics_if vif,
-            mailbox #(statistics_t) outputs
-        );
-            this.vif     = vif;
-            this.outputs = outputs;
-        endfunction
-
-        task run();
-            statistics_t actual;
-
-            forever begin
-                @(posedge vif.clk);
-
-                actual.count = vif.count;
-                actual.sum   = vif.sum;
-                actual.min   = vif.min;
-                actual.max   = vif.max;
-
-                outputs.put(actual);
-            end
-        endtask
     endclass
 
     class scoreboard;
-        mailbox #(transaction)  inputs;
-        mailbox #(statistics_t) outputs;
+        mailbox #(transaction) inputs;
+
+        virtual statistics_if vif;
 
         statistics_t model;
 
         int checked, errors;
 
         function new(
-            mailbox #(transaction)  inputs,
-            mailbox #(statistics_t) outputs
+            virtual statistics_if vif,
+            mailbox #(transaction)  inputs
         );
-            this.inputs  = inputs;
-            this.outputs = outputs;
+            this.vif    = vif;
+            this.inputs = inputs;
         endfunction
 
-        function void predict(transaction t);
-            if (t.clear === 1'b1) begin
-                model = '0;
-            end
-            else if (t.valid_in === 1'b1) begin
-                if (model.count != 16'hffff)
-                    model.count = model.count + 16'd1;
+    function void predict(transaction t);
+        if (t.clear === 1'b1) begin
+            model = '0;
+        end
+        else if (t.valid_in === 1'b1) begin
+            if (t.data_in > (32'hffff_ffff - model.sum))
+                model.sum = 32'hffff_ffff;
+            else
+                model.sum = model.sum + t.data_in;
 
+            // Первое значение задаёт min и max.
+            if (model.count == 0) begin
+                model.min = t.data_in;
+                model.max = t.data_in;
+            end
+            else begin
                 if (t.data_in < model.min)
                     model.min = t.data_in;
+
                 if (t.data_in > model.max)
                     model.max = t.data_in;
             end
-        endfunction
+
+            if (model.count != 10'h3ff)
+                model.count = model.count + 16'd1;
+        end
+    endfunction
 
         task run();
             transaction t;
-            statistics_t actual;
 
             forever begin
                 inputs.get(t);
-                predict(t);
-                outputs.get(actual);
 
-                if (actual.count !== model.count) begin
+                predict(t);
+
+                @(negedge vif.clk);
+
+                if (vif.count !== model.count) begin
                     errors++;
-                    $error("count mismatch: actual=%0d expected=%0d",actual.count, model.count);
+                    $error("count mismatch: actual=%0d expected=%0d", vif.count, model.count);
                 end
 
-                if (actual.sum !== model.sum) begin
+                if (vif.sum !== model.sum) begin
                     errors++;
-                    $error("sum mismatch: actual=%0h expected=%0h", actual.sum, model.sum);
+                    $error("sum mismatch: actual=%0h expected=%0h", vif.sum, model.sum);
+                end
+
+                if (vif.min !== model.min) begin
+                    errors++;
+                    $error("min mismatch: actual=%0h expected=%0h", vif.min, model.min);
+                end
+
+                if (vif.max !== model.max) begin
+                    errors++;
+                    $error("max mismatch: actual=%0h expected=%0h", vif.max, model.max);
                 end
 
                 checked++;
@@ -194,21 +193,17 @@ package statistics_tb_pkg;
     class environment;
         mailbox #(transaction) requests;
         mailbox #(transaction) inputs;
-        mailbox #(statistics_t) outputs;
         driver         drv;
         input_monitor  in_mon;
-        output_monitor out_mon;
         scoreboard     scb;
 
         function new(virtual statistics_if vif);
             requests = new();
             inputs   = new();
-            outputs  = new();
 
             drv      = new(vif, requests);
             in_mon   = new(vif, inputs);
-            out_mon  = new(vif, outputs);
-            scb      = new(inputs, outputs);
+            scb      = new(vif, inputs);
         endfunction
 
         task send_trans(transaction t);
@@ -219,7 +214,6 @@ package statistics_tb_pkg;
             fork
                 drv.run();
                 in_mon.run();
-                out_mon.run();
                 scb.run();
             join_none
         endtask
@@ -350,8 +344,15 @@ module tb;
         $finish;
     end
 
+    // Timeout
     initial begin
         #15us;
         $fatal(1, "Test timeout");
+    end
+
+    // Max errors count
+    initial begin
+        wait( env.scb.errors == 20 );
+        $fatal(1, "Max errors count!");
     end
 endmodule
