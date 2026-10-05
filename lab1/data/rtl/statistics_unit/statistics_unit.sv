@@ -19,6 +19,8 @@ module statistics_unit (
     logic [9:0] core_count_ff;
     logic [9:0] core_count_nx;
 
+    logic        sum_carry;
+    logic [32:0] core_sum;
     logic [31:0] core_sum_ff;
     logic [31:0] core_sum_nx;
 
@@ -33,7 +35,7 @@ module statistics_unit (
     //------------------
     assign wr_en_minmax =  valid_in | clear;
     assign wr_en_count  = (valid_in & ~(core_count_ff == '1)) | clear;
-    assign wr_en_sum    = (valid_in & ~(core_sum_ff   == '1)) | clear;
+    assign wr_en_sum    = (valid_in & ~(core_sum_ff == '1)) | clear;
 
     //------------------
     // count
@@ -50,7 +52,11 @@ module statistics_unit (
     //------------------
     // sum
     //------------------
-    assign core_sum_nx = clear ? '0 : core_sum_ff + data_in;
+    assign core_sum = 33'(core_sum_ff + data_in);
+    assogn sum_carry = core_sum[32];
+
+    assign core_sum_nx = clear     ? '0 : 
+                         sum_carry ? '1 : core_sum[31:0];
 
     always_ff @(posedge clk) begin
         if (~rst_n)
