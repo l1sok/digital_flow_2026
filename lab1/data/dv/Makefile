@@ -18,8 +18,8 @@ else ifeq ($(TEST),proc)
     RTL := ../rtl/processing_unit/processing_unit.sv
     TB  := tb_processing_unit.sv
 else ifeq ($(TEST),top)
-    RTL := ../rtl/processing_system/processing_system.sv
-    TB  := tb_top.sv
+    RTL := ../rtl/statistics_unit/statistics_unit.sv ../rtl/processing_unit/processing_unit.sv ../rtl/processing_system/processing_system.sv
+    TB  := processing_system_tb.sv
 else
     $(error Unknown TEST = $(TEST). Use stat, proc or top)
 endif
