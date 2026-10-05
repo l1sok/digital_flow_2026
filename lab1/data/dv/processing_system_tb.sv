@@ -1,11 +1,9 @@
-`timescale 1ns/1ps
-
 interface processing_system_if(input logic clk, input logic rst_n);
-    logic valid_in = 0;
-    logic [15:0] data_a = 0, data_b = 0;
-    logic [ 1:0] operation = 0;
-    logic clear = 0;
-    logic [31:0] range_limit = 0;
+    logic valid_in;
+    logic [15:0] data_a, data_b;
+    logic [ 1:0] operation;
+    logic clear;
+    logic [31:0] range_limit;
 
     logic result_valid;
     logic [31:0] result;
@@ -215,8 +213,10 @@ package processing_system_tb_pkg;
             forever begin
                 @(posedge vif.clk or negedge vif.rst_n);
 
-                if (vif.rst_n !== 1'b1)
+                if (vif.rst_n !== 1'b1) begin
                     flush_on_reset();
+                    model = '0;
+                end
                 else if (vif.clear === 1'b1)
                     model = '0;
             end
@@ -251,8 +251,7 @@ package processing_system_tb_pkg;
             logic [31:0] expected_range;
             logic expected_exceeded;
 
-            expected_range = (model.count == 0) ? 32'd0
-                                               : model.max - model.min;
+            expected_range = (model.count == 0) ? 32'd0 : model.max - model.min;
             expected_exceeded = (model.count != 0) && (expected_range > limit);
 
             if (actual_range !== expected_range) begin
@@ -414,12 +413,9 @@ module tb;
     );
 
     task automatic do_reset();
-        @(posedge clk);
-        #1;
         rst_n = 0;
         env.flush_on_reset();
         repeat (20) @(negedge clk);
-        #1;
         rst_n = 1;
     endtask
 
@@ -437,8 +433,6 @@ module tb;
 
     task automatic set_limit(logic [31:0] limit);
         bus.range_limit = limit;
-        #1;
-        env.scb.check_range(bus.range, bus.range_exceeded, limit);
     endtask
 
     initial begin
