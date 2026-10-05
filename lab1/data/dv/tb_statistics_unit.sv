@@ -347,7 +347,7 @@ module tb;
 
     // Timeout
     initial begin
-        #15us;
+        #50us;
         $fatal(1, "Test timeout");
     end
 

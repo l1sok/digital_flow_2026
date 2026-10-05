@@ -205,6 +205,7 @@ package processing_system_tb_pkg;
             output_t actual;
 
             model = '0;
+            model.min = '1;
             while (inputs.try_get(t));
             while (outputs.try_get(actual));
         endfunction
