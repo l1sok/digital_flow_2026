@@ -67,7 +67,7 @@ module statistics_unit (
 
     always_ff @(posedge clk) begin
         if (~rst_n)
-            core_min_ff <= '0;
+            core_min_ff <= '1;
         else if (wr_en_minmax)
             core_min_ff <= core_min_nx;
     end
