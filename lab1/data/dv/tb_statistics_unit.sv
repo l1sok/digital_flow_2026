@@ -123,6 +123,7 @@ package statistics_tb_pkg;
     function void predict(transaction t);
         if (t.clear === 1'b1) begin
             model = '0;
+            model.min = '1;
         end
         else if (t.valid_in === 1'b1) begin
             if (t.data_in > (32'hffff_ffff - model.sum))
