@@ -6,7 +6,7 @@ module statistics_unit (
     input  logic        valid_in,
     input  logic [31:0] data_in,
 
-    output logic [15:0] count,
+    output logic [ 9:0] count,
     output logic [31:0] sum,
     output logic [31:0] min,
     output logic [31:0] max
@@ -16,8 +16,8 @@ module statistics_unit (
     logic        wr_en_sum;
     logic        wr_en_minmax;
 
-    logic [15:0] core_count_ff;
-    logic [15:0] core_count_nx;
+    logic [9:0] core_count_ff;
+    logic [9:0] core_count_nx;
 
     logic [31:0] core_sum_ff;
     logic [31:0] core_sum_nx;
@@ -38,7 +38,7 @@ module statistics_unit (
     //------------------
     // count
     //------------------
-    assign core_count_nx = clear ? '0 : core_count + 16'd1;
+    assign core_count_nx = clear ? '0 : core_count_ff + 10'd1;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
@@ -62,12 +62,12 @@ module statistics_unit (
     //------------------
     // min
     //------------------
-    assign core_min_nx = clear                  ? '0 : 
+    assign core_min_nx = clear                  ? '0 :
                         (core_min_ff > data_in) ? data_in : core_min_ff;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
-            core_sum_ff <= '0;
+            core_min_ff <= '0;
         else if (wr_en_minmax)
             core_min_ff <= core_min_nx;
     end
@@ -75,14 +75,23 @@ module statistics_unit (
     //------------------
     // max
     //------------------
-    assign core_max_nx = clear                  ? '0 : 
+    assign core_max_nx = clear                  ? '0 :
                         (core_max_ff < data_in) ? data_in : core_max_ff;
 
     always_ff @(posedge clk) begin
         if (~rst_n)
-            core_sum_ff <= '0;
+            core_max_ff <= '0;
         else if (wr_en_minmax)
             core_max_ff <= core_max_nx;
     end
+
+    //------------------
+    // outputs
+    //------------------
+
+    assign count = core_count_ff;
+    assign sum   = core_sum_ff;
+    assign min   = core_min_ff;
+    assign max   = core_max_ff;
 
 endmodule
