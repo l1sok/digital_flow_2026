@@ -53,7 +53,7 @@ module statistics_unit (
     // sum
     //------------------
     assign core_sum = 33'(core_sum_ff + data_in);
-    assogn sum_carry = core_sum[32];
+    assign sum_carry = core_sum[32];
 
     assign core_sum_nx = clear     ? '0 : 
                          sum_carry ? '1 : core_sum[31:0];
