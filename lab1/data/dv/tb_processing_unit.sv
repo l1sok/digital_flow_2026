@@ -12,8 +12,8 @@ package pu_tb_pkg;
     typedef enum logic [1:0] {
         ADD    = 2'b00,
         SUB    = 2'b01,
-        MUL    = 2'b10,
-        XOR_OP = 2'b11
+        XOR_OP = 2'b10,
+        MUL    = 2'b11
     } operation_t;
 
     class transaction;
