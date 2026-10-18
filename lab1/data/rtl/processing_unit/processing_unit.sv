@@ -13,17 +13,17 @@ module processing_unit (
 
     localparam RESULT_WIDTH = 32;
 
-    enum logic [1:0] {ADD, SUB, XOR, MULT} core_op;
+    typedef enum logic [1:0] {
+        ADD, SUB, XOR, MULT
+    } core_op_t;
 
     logic [31:0] result_nx;
     logic [31:0] result_ff;
 
     logic valid_ff;
 
-    assign core_op = operation;
-
     always_comb begin
-        case(core_op)
+        case(operation)
             ADD:     result_nx = RESULT_WIDTH'(data_a + data_b);
             SUB:     result_nx = RESULT_WIDTH'(data_a - data_b);
             XOR:     result_nx = RESULT_WIDTH'(data_a ^ data_b);
