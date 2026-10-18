@@ -4,7 +4,7 @@
 # ################
 set lib_list_typ {}
 
-lappend lib_list_typ  " $::env(PDK_DIR)/IHP_Open_PDK/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib"
+lappend lib_list_typ  "$::env(PDK_DIR)/IHP_Open_PDK/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib"
 
 create_rc_corner -name typ -temperature {25} -pre_route_res {1} -pre_route_cap {1} -pre_route_clock_res {0} -pre_route_clock_cap {0} -post_route_res {1} -post_route_cap {1} -post_route_cross_cap {1} -post_route_clock_res {0} -post_route_clock_cap {0}
 create_library_set -name typ -timing $lib_list_typ
@@ -27,7 +27,7 @@ create_delay_corner -name typ -timing_condition {typ} -rc_corner {typ}
 # create_delay_corner <PLACEHOLDER>
 
 # ################
-# FINAL 
+# FINAL
 # ################
 
 create_constraint_mode -name func -sdc_files "$::env(ENV_DESIGN_DIR)/$::env(ENV_DESIGN).sdc"
