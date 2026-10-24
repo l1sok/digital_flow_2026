@@ -24,6 +24,7 @@ module processing_unit (
 
     always_comb begin
         case(operation)
+
             ADD:     result_nx = RESULT_WIDTH'(data_a + data_b);
             SUB:     result_nx = RESULT_WIDTH'(data_a - data_b);
             XOR:     result_nx = RESULT_WIDTH'(data_a ^ data_b);
