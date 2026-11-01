@@ -1,0 +1,126 @@
+module statistics_unit (
+    input  logic        clk,
+    input  logic        rst_n,
+
+    input  logic        clear,
+    input  logic        valid_in,
+    input  logic [31:0] data_in,
+
+    output logic [ 9:0] count,
+    output logic [31:0] sum,
+    output logic [31:0] min,
+    output logic [31:0] max
+);
+
+    logic        valid_in_ff;
+    logic        clear_ff;
+    logic [31:0] data_in_ff;
+
+    logic        wr_en_count;
+    logic        wr_en_sum;
+    logic        wr_en_minmax;
+
+    logic [9:0] core_count_ff;
+    logic [9:0] core_count_nx;
+
+    logic        sum_carry;
+    logic [32:0] core_sum;
+    logic [31:0] core_sum_ff;
+    logic [31:0] core_sum_nx;
+
+    logic [31:0] core_min_ff;
+    logic [31:0] core_min_nx;
+
+    logic [31:0] core_max_ff;
+    logic [31:0] core_max_nx;
+
+    always_ff @(posedge clk) begin
+        if (~rst_n)
+            valid_in_ff <= '0;
+        else
+            valid_in_ff <= valid_in;
+    end
+
+     always_ff @(posedge clk) begin
+        if (valid_in)
+            data_in_ff <= data_in;
+    end
+
+    always_ff @(posedge clk) begin
+        if (~rst_n)
+            clear_ff <= '0;
+        else
+            clear_ff <= clear;
+    end
+
+    //------------------
+    // statistics write enable
+    //------------------
+    assign wr_en_minmax =  valid_in_ff | clear_ff;
+    assign wr_en_count  = (valid_in_ff & ~(core_count_ff == '1)) | clear_ff;
+    assign wr_en_sum    = (valid_in_ff & ~(core_sum_ff == '1)) | clear_ff;
+
+    //------------------
+    // count
+    //------------------
+    assign core_count_nx = clear_ff ? '0 : core_count_ff + 10'd1;
+
+    always_ff @(posedge clk) begin
+        if (~rst_n)
+            core_count_ff <= '0;
+        else if (wr_en_count)
+            core_count_ff <= core_count_nx;
+    end
+
+    //------------------
+    // sum
+    //------------------
+    assign core_sum = 33'(core_sum_ff + data_in_ff);
+    assign sum_carry = core_sum[32];
+
+    assign core_sum_nx = clear_ff  ? '0 :
+                         sum_carry ? '1 : core_sum[31:0];
+
+    always_ff @(posedge clk) begin
+        if (~rst_n)
+            core_sum_ff <= '0;
+        else if (wr_en_sum)
+            core_sum_ff <= core_sum_nx;
+    end
+
+    //------------------
+    // min
+    //------------------
+    assign core_min_nx = clear_ff                  ? '1 :
+                        (core_min_ff > data_in_ff) ? data_in_ff : core_min_ff;
+
+    always_ff @(posedge clk) begin
+        if (~rst_n)
+            core_min_ff <= '1;
+        else if (wr_en_minmax)
+            core_min_ff <= core_min_nx;
+    end
+
+    //------------------
+    // max
+    //------------------
+    assign core_max_nx = clear_ff                  ? '0 :
+                        (core_max_ff < data_in_ff) ? data_in_ff : core_max_ff;
+
+    always_ff @(posedge clk) begin
+        if (~rst_n)
+            core_max_ff <= '0;
+        else if (wr_en_minmax)
+            core_max_ff <= core_max_nx;
+    end
+
+    //------------------
+    // outputs
+    //------------------
+
+    assign count = core_count_ff;
+    assign sum   = core_sum_ff;
+    assign min   = core_min_ff;
+    assign max   = core_max_ff;
+
+endmodule
