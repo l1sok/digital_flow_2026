@@ -1,0 +1,104 @@
+xrun(64): 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	23.09-s001: Started on Oct 05, 2026 at 20:35:06 MSK
+xrun
+	-sv
+	-timescale 1ns/1ps
+	-access +rwc
+	-top tb
+	../rtl/processing_unit/processing_unit.sv
+	tb_processing_unit.sv
+	-input dump.tcl
+file: ../rtl/processing_unit/processing_unit.sv
+    assign core_op = operation;
+                             |
+xmvlog: *W,ENUMERR (../rtl/processing_unit/processing_unit.sv,23|29): This assignment is a violation of SystemVerilog strong typing rules for enumeration datatypes.
+	module worklib.processing_unit:sv
+		errors: 0, warnings: 1
+file: tb_processing_unit.sv
+	package worklib.pu_tb_pkg:sv
+		errors: 0, warnings: 0
+        logic [15:0] boundary_values [6] = '{
+                                         |
+xmvlog: *W,VARIST (tb_processing_unit.sv,265|41): Local static variable with initializer requires 'static' keyword.
+	module worklib.tb:sv
+		errors: 0, warnings: 1
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		pu_tb_pkg
+		tb
+                $urandom_range(16'hffff, 0),
+                                |
+xmelab: *W,INTWID (./tb_processing_unit.sv,284|32): Invalid width (16) on argument, (32) expected.
+                $urandom_range(16'hffff, 0),
+                                |
+xmelab: *W,INTWID (./tb_processing_unit.sv,285|32): Invalid width (16) on argument, (32) expected.
+                $urandom_range(16'hffff, 0),
+                                |
+xmelab: *W,INTWID (./tb_processing_unit.sv,298|32): Invalid width (16) on argument, (32) expected.
+                $urandom_range(16'hffff, 0),
+                                |
+xmelab: *W,INTWID (./tb_processing_unit.sv,299|32): Invalid width (16) on argument, (32) expected.
+	Building instance overlay tables: ....................
+    assign core_op = operation;
+                             |
+xmelab: *W,ENUMERR (../rtl/processing_unit/processing_unit.sv,23|29): This assignment is a violation of SystemVerilog strong typing rules for enumeration datatypes.
+ Done
+	Generating native compiled code:
+		worklib.processing_unit:sv <0x2889a01d>
+			streams:   7, words:  1962
+		worklib.tb:sv <0x504f35c4>
+			streams:  19, words: 14549
+		worklib.pu_tb_pkg:sv <0x73d538dc>
+			streams:  61, words: 50908
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                     Instances  Unique
+		Modules:                     2       2
+		Interfaces:                  1       1
+		Verilog packages:            1       1
+		Registers:                  85     106
+		Scalar wires:                6       -
+		Vectored wires:              7       -
+		Named events:                1       1
+		Always blocks:              10      10
+		Initial blocks:              7       7
+		Parallel blocks:             1       1
+		Cont. assignments:           3       3
+		Pseudo assignments:          8       -
+		Assertions:                  1       1
+		SV Class declarations:       6       6
+		SV Class specializations:    6       6
+		Process Clocks:              1       1
+		Simulation timescale:      1ps
+	Writing initial simulation snapshot: worklib.tb:sv
+Loading snapshot worklib.tb:sv .................... Done
+SVSEED default: 1
+xcelium> source /local/tools/cadence/XCELIUM/23.09.001/tools/xcelium/files/xmsimrc
+xcelium> database -open waves -shm -into waves.shm
+Created SHM database waves
+xcelium> probe -create tb/dut -database waves -all -depth all
+Created probe 1
+xcelium> 
+xcelium> simvision {
+>     waveform new -reuse -name dut
+>     waveform using dut
+>     browser select deep tb.dut
+>     waveform add -selected
+> }
+xmsim: *E,TCLERR: SimVision/Verisium Debug process terminated before a connection was established.
+    while executing
+"simvision {
+    waveform new -reuse -name dut
+    waveform using dut
+    browser select deep tb.dut
+    waveform add -selected
+}"
+xcelium> 
+xcelium> run
+PASS: checked=360
+Simulation complete via $finish(1) at time 3820 NS + 1
+./tb_processing_unit.sv:309         $finish;
+xcelium> exit
+TOOL:	xrun(64)	23.09-s001: Exiting on Oct 05, 2026 at 20:35:08 MSK  (total: 00:00:02)

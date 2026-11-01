@@ -1,0 +1,21 @@
+s1(05Oct2026:19:33:28):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/statistics_unit/statistics_unit.sv ../rtl/processing_unit/processing_unit.sv ../rtl/processing_system/processing_system.sv processing_system_tb.sv -input dump.tcl 
+s2(05Oct2026:19:34:49):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/statistics_unit/statistics_unit.sv tb_statistics_unit.sv -input dump.tcl 
+s3(05Oct2026:19:35:21):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/statistics_unit/statistics_unit.sv tb_statistics_unit.sv -input dump.tcl 
+s4(05Oct2026:19:35:43):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s5(05Oct2026:19:37:35):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s6(05Oct2026:19:39:47):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s7(05Oct2026:19:59:25):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s8(05Oct2026:20:00:44):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s9(05Oct2026:20:01:23):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s10(05Oct2026:20:02:22):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s11(05Oct2026:20:03:33):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s12(05Oct2026:20:09:56):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s13(05Oct2026:20:12:46):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s14(05Oct2026:20:13:38):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s15(05Oct2026:20:15:13):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s16(05Oct2026:20:15:34):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s17(05Oct2026:20:17:13):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 
+s18(05Oct2026:20:17:38):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/statistics_unit/statistics_unit.sv ../rtl/processing_unit/processing_unit.sv ../rtl/processing_system/processing_system.sv processing_system_tb.sv -input dump.tcl 
+s19(05Oct2026:20:34:27):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/statistics_unit/statistics_unit.sv ../rtl/processing_unit/processing_unit.sv ../rtl/processing_system/processing_system.sv processing_system_tb.sv -input dump.tcl 
+s20(05Oct2026:20:34:54):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/statistics_unit/statistics_unit.sv ../rtl/processing_unit/processing_unit.sv ../rtl/processing_system/processing_system.sv processing_system_tb.sv -input dump.tcl 
+s21(05Oct2026:20:35:06):  xrun -sv -timescale 1ns/1ps -access +rwc -top tb ../rtl/processing_unit/processing_unit.sv tb_processing_unit.sv -input dump.tcl 

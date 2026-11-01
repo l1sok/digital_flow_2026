@@ -1,0 +1,25 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-INPUT
+dump.tcl
+-MESSAGES
++EMGRLOG
+xrun.log
+-XLSTIME
+1791221706
+-XLKEEP
+-XLMODE
+./xcelium.d/run.lnx8664.23.09.d
+-RUNMODE
+-CDSLIB
+./xcelium.d/run.lnx8664.23.09.d/cds.lib
+-HDLVAR
+./xcelium.d/run.lnx8664.23.09.d/hdl.var
+-XLNAME
+xrun
+-XLVERSION
+"TOOL:	xrun(64)	23.09-s001"
+-XLNAME
+./xcelium.d/run.lnx8664.23.09.d/miet-cad-edu_760e6a09-06d5-4621-ae76-a3dc02fc9f62
